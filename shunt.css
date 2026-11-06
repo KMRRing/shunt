@@ -1,0 +1,99 @@
+/* Shunt: a hexagonal plate of gears, shoved in from the rim. The plate is a walnut frame round a baize of brass-edged recesses; the
+   gears are in three pitches (A yellow gilt, B blued steel, C rose gold), the idler black; the levers on the rim are little steel tabs. All of it is drawn by shunt-view-2d.js with these tokens. The house enamel is verdigris-green baize and brass. */
+:root {
+  --sh-wood: #5B3A24;      /* the walnut frame */
+  --sh-baize: #2B4A3E;     /* the plate's cloth */
+  --sh-recess: #1F382F;    /* a cell's floor, and the windows cut in a gear */
+  --sh-brass: #B8913F;     /* the brass edge of the plate and its recesses */
+  --sh-iron: #43484C;      /* a stud's plate, a lever whose line is full */
+  --sh-glow: #FFE08A;      /* what the board lights: the lever chosen, the coach's pulse, the shove's ghost */
+  --sh-a: #F0C53A;         /* pitch A: yellow gilt */
+  --sh-b: #2F62B8;         /* pitch B: blued steel */
+  --sh-c: #E88E86;         /* pitch C: rose gold */
+  --sh-i: #25262A;         /* the idler: black DLC */
+  --bad: #A8382B;
+  --good: #2F7D5B;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-mode="day"]) { --sh-wood: #3C2517; --sh-baize: #1D362C; --sh-recess: #132821; --sh-iron: #34383C; --bad: #E8806F; --good: #7FC2A8; }
+}
+html[data-mode="night"] { --sh-wood: #3C2517; --sh-baize: #1D362C; --sh-recess: #132821; --sh-iron: #34383C; --bad: #E8806F; --good: #7FC2A8; }
+
+.sh-mark { display: inline-block; }
+.sh-mark svg { width: 100%; height: 100%; display: block; }
+
+#app.shunt { gap: .4rem; }
+/* where you are and what is asked */
+.sh-head { display: grid; gap: .3rem; margin-top: .1rem; }
+.sh-line1 { display: flex; justify-content: space-between; align-items: baseline; gap: .6rem; min-width: 0; }
+.sh-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .74rem; font-weight: 800; font-stretch: var(--wide); text-transform: var(--caps);
+  letter-spacing: calc(.1em * var(--track)); color: var(--ink-soft); }
+.sh-name b { color: var(--ink); }
+.sh-sc { flex: none; font-size: .86rem; color: var(--ink-soft); white-space: nowrap; }
+.sh-sc b { color: var(--ink); font-size: 1.1rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.sh-stars { margin-left: .45rem; color: var(--brass-lo); letter-spacing: .1em; }
+.sh-aim { display: flex; gap: .3rem; flex-wrap: nowrap; overflow: hidden; align-items: center; min-height: 1.65rem; }
+.sh-aim .lab { flex: none; font-size: .64rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
+.sh-part { flex: none; padding: .12rem .4rem; border: 1px solid var(--brass); border-radius: 4px; background: var(--sheet); font-size: .72rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sh-part.ok { border-color: var(--good); background: color-mix(in srgb, var(--good) 16%, var(--sheet)); }
+.sh-part.ok::before { content: "\2713\00a0"; color: var(--good); font-weight: 800; }
+.sh-part.bad { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, var(--sheet)); }
+
+/* the plate: as large as its room allows */
+.sh-plate { position: relative; }
+.sh-board { display: block; width: min(100cqw, 100cqh * 284 / 312); height: auto; aspect-ratio: 284 / 312; touch-action: manipulation; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.sh-letter { font: 800 8px/1 var(--font); text-anchor: middle; dominant-baseline: central; fill: #2a1d08; fill-opacity: .85; paint-order: stroke; stroke: rgba(255,255,255,.55); stroke-width: 1.4px; pointer-events: none; }
+.sh-letter.lt { fill: #fff; fill-opacity: 1; stroke: rgba(0,0,0,.5); }
+.sh-tag { font: 800 8.5px/1 var(--font); text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.sh-cap { font: 800 7.5px/1 var(--font); letter-spacing: .16em; text-anchor: middle; fill: var(--ink-soft); }
+
+/* under the plate: what the coach or the preview says, the queue, the buttons */
+.sh-side { display: grid; gap: .4rem; }
+.sh-coach { margin: 0; height: 4.5rem; overflow-y: auto; overscroll-behavior: contain; padding: .35rem .65rem; border: 1px solid var(--rule); border-left: 4px solid var(--brass); border-radius: 4px;
+  background: var(--sheet); font-size: .84rem; line-height: 1.3; }
+.sh-coach.good { border-left-color: var(--good); background: color-mix(in srgb, var(--good) 11%, var(--sheet)); }
+.sh-coach.bad { border-left-color: var(--bad); background: color-mix(in srgb, var(--bad) 11%, var(--sheet)); }
+.sh-coach b.g { color: var(--good); }
+.sh-coach b.r { color: var(--bad); }
+.sh-coach .def { display: block; color: var(--ink-soft); font-style: italic; font-size: .78rem; }
+.sh-tray { display: block; width: 100%; height: auto; aspect-ratio: 340 / 82; touch-action: manipulation; }
+.sh-acts { display: grid; grid-template-columns: 1fr 1fr 1fr 1.35fr; gap: .4rem; }
+.sh-btn { min-height: 2.75rem; padding: 0 .2rem; border: 1px solid var(--brass); border-radius: 4px; background: var(--sheet); color: var(--ink); font: inherit; font-size: .74rem; font-weight: 800;
+  font-stretch: 106%; letter-spacing: calc(.07em * var(--track)); text-transform: var(--caps); cursor: pointer; }
+.sh-btn:disabled { opacity: .35; cursor: default; }
+.sh-btn.plate { background: var(--plate); color: var(--plate-ink); border-color: var(--plate); outline: 1px solid color-mix(in srgb, var(--plate-ink) 55%, transparent); outline-offset: -4px; }
+.sh-btn.plate:disabled { background: var(--sheet); color: var(--ink-soft); border-color: var(--brass); outline: 0; opacity: .5; }
+.sh-btn.hl { border: 2px solid var(--plate); background: color-mix(in srgb, var(--brass) 28%, var(--sheet)); animation: sh-pulse .7s ease-in-out infinite alternate; }
+@keyframes sh-pulse { from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--brass) 55%, transparent); } to { box-shadow: 0 0 0 .3rem color-mix(in srgb, var(--brass) 0%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .sh-btn.hl { animation: none; } }
+
+.sh-toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 1.2rem); transform: translateX(-50%); z-index: 40; width: max-content; max-width: min(92vw, 30rem); margin: 0;
+  padding: .55rem .9rem; border-radius: 4px; background: var(--ink); color: var(--yard); font-weight: 650; font-size: .95rem; text-align: center; opacity: 0; pointer-events: none; transition: opacity .18s; }
+.sh-toast.show { opacity: 1; }
+
+/* the menu's level list: a button a level, its stars; a locked one dimmed */
+.sh-levels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; margin: .4rem 0; }
+.sh-levels button { display: grid; gap: .1rem; text-align: left; padding: .45rem .6rem; border: 1px solid var(--rule); border-radius: 4px; background: var(--sheet); color: var(--ink); font: inherit; cursor: pointer; }
+.sh-levels button[aria-current="true"] { border: 2px solid var(--brass); padding: calc(.45rem - 1px) calc(.6rem - 1px); }
+.sh-levels button:disabled { opacity: .45; cursor: default; }
+.sh-levels b { font-size: .86rem; }
+.sh-levels span { font-size: .7rem; color: var(--ink-soft); }
+.sh-levels .st { color: var(--brass-lo); letter-spacing: .12em; font-size: .8rem; }
+
+/* held sideways: the plate on the left with all the height; the head, the coach, the queue and the buttons beside it, the buttons low where a thumb is */
+@media (orientation: landscape) and (min-width: 700px) {
+  #app.shunt { --beside: 22rem; grid-template-rows: auto auto minmax(0, 1fr); }
+  #app.shunt .sh-head { grid-column: 2; grid-row: 2; align-content: start; margin-top: .6rem; }
+  #app.shunt .sh-aim { flex-wrap: wrap; overflow: visible; }
+  #app.shunt .sh-plate { grid-column: 1; grid-row: 2 / span 2; margin-top: .6rem; }
+  #app.shunt .sh-side { grid-column: 2; grid-row: 3; align-content: end; }
+}
+
+/* the 3D watch movement: the canvas fills the plate's box and is clear round the case, so the page shows through; the flat board and the tray (the queue and the hold are on the movement's own tray) give way to it */
+.sh-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: pointer; border-radius: 4px; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; outline: none; }
+#app.view3d .sh-board, #app.view3d .sh-tray { display: none; }
+
+/* the 3D view's "Level" button: shown only when the player has turned the view; top left, clear of the menu's mark */
+.sh-level { position: absolute; left: .3rem; top: .3rem; z-index: 2; min-height: 2.5rem; padding: 0 .8rem; border: 1px solid var(--brass); border-radius: 4px; background: color-mix(in srgb, var(--sheet) 88%, transparent);
+  color: var(--ink); font: inherit; font-size: .74rem; font-weight: 800; font-stretch: 106%; letter-spacing: calc(.07em * var(--track)); text-transform: var(--caps); cursor: pointer; touch-action: manipulation; }
+.sh-level[hidden] { display: none; }

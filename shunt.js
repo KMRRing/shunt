@@ -493,7 +493,6 @@ function openMenu() {
   body.replaceChildren();
   const play = part(body, "play");
   play.append(action(run.kind === "level" ? `Replay level ${levelNo()}` : run.kind === "random" ? "New plate" : "Replay today's plate", () => (run.kind === "random" ? newRandomAsk() : replay()), "primary"));
-  if (!IN_FRAME) play.append(action(view.kind === "3d" ? "Play in 2D" : "Play in 3D", () => setView(view.kind !== "3d", true), "link"));
   const content = part(body, "content");
   content.append(choice("Mode", [["levels", "Levels"], ["random", "Random"]], mode, v => { $("menuDlg").close(); setMode(v); }));
   if (mode === "levels") content.append(levelList());
@@ -503,6 +502,7 @@ function openMenu() {
     back: mode === "daily" ? { text: `Back to ${rest === "levels" ? "the levels" : "a random plate"}`, fn: () => setMode(rest) } : null,
   });
   const settings = part(body, "settings");
+  if (!IN_FRAME) settings.append(toggle("Play in 2D (saves battery)", view.kind !== "3d", on => setView(!on, true)));
   if (view.kind === "3d") settings.append(toggle("Sound", sfx.on, on => { sfx.on = on; write(SOUND, on); if (on) { sfx.unlock(); sfx.play("tick"); } }));
   if (view.kind === "3d" && view.canDeviceTilt && matchMedia("(pointer: coarse)").matches) {
     settings.append(toggle("Tilt with the phone", read(TILT, false, v => typeof v === "boolean"), async on => {
